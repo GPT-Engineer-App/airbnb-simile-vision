@@ -8,15 +8,41 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 
 const Index = () => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   useEffect(() => {
     const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
     setIsLoggedIn(loggedIn);
   }, []);
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (username === 'admin' && password === 'admin') {
+      localStorage.setItem('isLoggedIn', 'true');
+      setIsLoggedIn(true);
+      setIsLoginModalOpen(false);
+      setUsername('');
+      setPassword('');
+      setLoginError('');
+    } else {
+      setLoginError('Invalid credentials');
+    }
+  };
   const [searchParams, setSearchParams] = useState({
     where: '',
     checkIn: '',
@@ -124,7 +150,7 @@ const Index = () => {
                       </Button>
                     </>
                   ) : (
-                    <Button variant="ghost" onClick={() => navigate('/login')}>Login</Button>
+                    <Button variant="ghost" onClick={() => setIsLoginModalOpen(true)}>Login</Button>
                   )}
                 </div>
               </div>
@@ -204,6 +230,42 @@ const Index = () => {
           ))}
         </div>
       </div>
+
+      <Dialog open={isLoginModalOpen} onOpenChange={setIsLoginModalOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Login</DialogTitle>
+            <DialogDescription>
+              Enter your credentials to log in.
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleLogin}>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Input
+                  id="username"
+                  placeholder="Username"
+                  className="col-span-4"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="Password"
+                  className="col-span-4"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+            </div>
+            {loginError && <p className="text-red-500 mb-4">{loginError}</p>}
+            <Button type="submit">Login</Button>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
