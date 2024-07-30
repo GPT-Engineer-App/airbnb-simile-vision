@@ -33,7 +33,7 @@ const MyTrips = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <header className="flex justify-between items-center py-4 border-b">
         <div className="flex items-center">
-          <img src="/airbnb-logo.png" alt="Airbnb" className="h-8 w-auto cursor-pointer" onClick={() => navigate('/')} />
+          <img src="https://banner2.cleanpng.com/20180605/ukq/aa9749ew2.webp" alt="Airbnb" className="h-8 w-auto cursor-pointer" onClick={() => navigate('/')} />
         </div>
         <div className="flex items-center space-x-4">
           <Button variant="ghost">Airbnb your home</Button>
