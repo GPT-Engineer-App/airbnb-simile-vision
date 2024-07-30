@@ -152,8 +152,8 @@ const Index = () => {
                 <div className="space-y-2">
                   {isLoggedIn ? (
                     <>
-                      <Button variant="ghost" onClick={() => navigate('/my-trips')}>My Trips</Button>
-                      <Button variant="ghost" onClick={handleLogout} className="flex items-center">
+                      <Button variant="ghost" onClick={() => navigate('/my-trips')} className="w-full justify-start">My Trips</Button>
+                      <Button variant="ghost" onClick={handleLogout} className="w-full justify-start flex items-center">
                         <LogOut className="h-4 w-4 mr-2" />
                         Logout
                       </Button>
