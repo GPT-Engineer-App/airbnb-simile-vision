@@ -20,10 +20,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 
-const unsplash = createApi({
-  accessKey: 'YOUR_UNSPLASH_ACCESS_KEY'
-});
-
 const Index = () => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -131,26 +127,15 @@ const Index = () => {
   ];
 
   useEffect(() => {
-    const fetchImages = async () => {
-      const images = {};
-      for (const experience of experiences) {
-        try {
-          const result = await unsplash.search.getPhotos({
-            query: experience.title,
-            page: 1,
-            perPage: 1,
-          });
-          if (result.response && result.response.results.length > 0) {
-            images[experience.title] = result.response.results[0].urls.regular;
-          }
-        } catch (error) {
-          console.error('Error fetching image:', error);
-        }
-      }
-      setExperienceImages(images);
+    // Simulating image URLs for experiences
+    const simulatedImages = {
+      'Train at the X-Mansion': '/placeholder.svg',
+      'Go VIP with Kevin Hart': '/placeholder.svg',
+      'Join a living room session with Doja': '/placeholder.svg',
+      "Stay in Prince's Purple Rain house": '/placeholder.svg',
+      'Live like Bollywood star Janhvi Kapoor': '/placeholder.svg',
     };
-
-    fetchImages();
+    setExperienceImages(simulatedImages);
   }, []);
 
   return (
