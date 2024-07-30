@@ -95,6 +95,7 @@ const MyTrips = () => {
         Can't find your reservation here? <a href="#" className="text-blue-600 hover:underline">Visit the Help Center</a>
       </p>
     </div>
+  </div>
   );
 };
 
