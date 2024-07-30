@@ -19,7 +19,7 @@ const Login = () => {
     e.preventDefault();
     if (username === 'admin' && password === 'admin') {
       localStorage.setItem('isLoggedIn', 'true');
-      navigate('/my-trips');
+      window.location.href = '/'; // Force a full page reload
     } else {
       setError('Invalid credentials');
     }

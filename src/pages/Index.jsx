@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Globe, Menu, User, LogOut } from 'lucide-react';
 import { Button } from "@/components/ui/button"
@@ -9,8 +9,14 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 
-const Index = ({ isLoggedIn, setIsLoggedIn }) => {
+const Index = () => {
   const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    setIsLoggedIn(loggedIn);
+  }, []);
   const [searchParams, setSearchParams] = useState({
     where: '',
     checkIn: '',
