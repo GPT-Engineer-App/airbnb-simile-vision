@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Globe, Menu, User, LogOut, Calendar } from 'lucide-react';
+import { createApi } from 'unsplash-js';
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -19,9 +20,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 
+const unsplash = createApi({
+  accessKey: 'YOUR_UNSPLASH_ACCESS_KEY'
+});
+
 const Index = () => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [experienceImages, setExperienceImages] = useState({});
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
@@ -100,34 +106,52 @@ const Index = () => {
       title: 'Train at the X-Mansion',
       host: 'Hosted by Jubilee',
       price: '€36 per guest',
-      image: '/placeholder.svg',
       live: true,
     },
     {
       title: 'Go VIP with Kevin Hart',
       host: 'Hosted by Kevin Hart',
       price: 'Coming August 21',
-      image: '/placeholder.svg',
     },
     {
       title: 'Join a living room session with Doja',
       host: 'Hosted by Doja Cat',
       price: 'Coming October',
-      image: '/placeholder.svg',
     },
     {
       title: "Stay in Prince's Purple Rain house",
       host: 'Hosted by Wendy and Lisa',
       price: 'Coming October',
-      image: '/placeholder.svg',
     },
     {
       title: 'Live like Bollywood star Janhvi Kapoor',
       host: 'Hosted by Janhvi Kapoor',
       price: 'Sold out',
-      image: '/placeholder.svg',
     },
   ];
+
+  useEffect(() => {
+    const fetchImages = async () => {
+      const images = {};
+      for (const experience of experiences) {
+        try {
+          const result = await unsplash.search.getPhotos({
+            query: experience.title,
+            page: 1,
+            perPage: 1,
+          });
+          if (result.response && result.response.results.length > 0) {
+            images[experience.title] = result.response.results[0].urls.regular;
+          }
+        } catch (error) {
+          console.error('Error fetching image:', error);
+        }
+      }
+      setExperienceImages(images);
+    };
+
+    fetchImages();
+  }, []);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -234,7 +258,11 @@ const Index = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
           {experiences.map((experience, index) => (
             <div key={index} className="relative rounded-lg overflow-hidden">
-              <img src={experience.image} alt={experience.title} className="w-full h-64 object-cover" />
+              <img 
+                src={experienceImages[experience.title] || '/placeholder.svg'} 
+                alt={experience.title} 
+                className="w-full h-64 object-cover"
+              />
               {experience.live && (
                 <span className="absolute top-2 left-2 bg-white text-black text-xs font-semibold px-2 py-1 rounded">
                   LIVE
