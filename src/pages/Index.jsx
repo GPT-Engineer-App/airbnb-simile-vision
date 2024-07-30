@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Search, Globe, Menu, User } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Search, Globe, Menu, User, LogOut } from 'lucide-react';
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -8,7 +9,25 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 
-const categories = [
+const Index = ({ isLoggedIn, setIsLoggedIn }) => {
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useState({
+    where: '',
+    checkIn: '',
+    checkOut: '',
+    who: '',
+  });
+
+  const handleSearchChange = (e) => {
+    setSearchParams({ ...searchParams, [e.target.name]: e.target.value });
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('isLoggedIn');
+    setIsLoggedIn(false);
+  };
+
+  const categories = [
   { name: 'Icons', icon: '💰' },
   { name: 'Beach', icon: '🏖️' },
   { name: 'Amazing pools', icon: '🏊' },
@@ -102,10 +121,17 @@ const Index = () => {
             <PopoverContent className="w-50">
               <div className="grid gap-4">
                 <div className="space-y-2">
-                  <h4 className="font-medium leading-none">Account</h4>
-                  <p className="text-sm text-muted-foreground">
-                    Manage your account settings
-                  </p>
+                  {isLoggedIn ? (
+                    <>
+                      <Button variant="ghost" onClick={() => navigate('/my-trips')}>My Trips</Button>
+                      <Button variant="ghost" onClick={handleLogout} className="flex items-center">
+                        <LogOut className="h-4 w-4 mr-2" />
+                        Logout
+                      </Button>
+                    </>
+                  ) : (
+                    <Button variant="ghost" onClick={() => navigate('/login')}>Login</Button>
+                  )}
                 </div>
               </div>
             </PopoverContent>
