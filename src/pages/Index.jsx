@@ -28,77 +28,65 @@ const Index = ({ isLoggedIn, setIsLoggedIn }) => {
   };
 
   const categories = [
-  { name: 'Icons', icon: '💰' },
-  { name: 'Beach', icon: '🏖️' },
-  { name: 'Amazing pools', icon: '🏊' },
-  { name: 'Cabins', icon: '🏡' },
-  { name: 'Treehouses', icon: '🌳' },
-  { name: 'Tropical', icon: '🌴' },
-  { name: 'Amazing views', icon: '🏞️' },
-  { name: 'OMG!', icon: '😲' },
-  { name: 'Castles', icon: '🏰' },
-  { name: 'Countryside', icon: '🌾' },
-  { name: 'Tiny homes', icon: '🏠' },
-  { name: 'Caves', icon: '🕳️' },
-  { name: 'Lakefront', icon: '🏞️' },
-  { name: 'National parks', icon: '🏞️' },
-  { name: 'Lake', icon: '🌊' },
-  { name: 'Camping', icon: '⛺' },
-  { name: 'Earth homes', icon: '🌍' },
-  { name: 'Islands', icon: '🏝️' },
-  { name: 'Mansions', icon: '🏘️' },
-  { name: 'Trending', icon: '🔥' },
-  { name: 'A-frames', icon: '🏠' },
-  { name: 'Historical homes', icon: '🏛️' },
-  { name: 'Bed & breakfasts', icon: '🛏️' },
-  { name: 'New', icon: '✨' },
-];
+    { name: 'Icons', icon: '💰' },
+    { name: 'Beach', icon: '🏖️' },
+    { name: 'Amazing pools', icon: '🏊' },
+    { name: 'Cabins', icon: '🏡' },
+    { name: 'Treehouses', icon: '🌳' },
+    { name: 'Tropical', icon: '🌴' },
+    { name: 'Amazing views', icon: '🏞️' },
+    { name: 'OMG!', icon: '😲' },
+    { name: 'Castles', icon: '🏰' },
+    { name: 'Countryside', icon: '🌾' },
+    { name: 'Tiny homes', icon: '🏠' },
+    { name: 'Caves', icon: '🕳️' },
+    { name: 'Lakefront', icon: '🏞️' },
+    { name: 'National parks', icon: '🏞️' },
+    { name: 'Lake', icon: '🌊' },
+    { name: 'Camping', icon: '⛺' },
+    { name: 'Earth homes', icon: '🌍' },
+    { name: 'Islands', icon: '🏝️' },
+    { name: 'Mansions', icon: '🏘️' },
+    { name: 'Trending', icon: '🔥' },
+    { name: 'A-frames', icon: '🏠' },
+    { name: 'Historical homes', icon: '🏛️' },
+    { name: 'Bed & breakfasts', icon: '🛏️' },
+    { name: 'New', icon: '✨' },
+  ];
 
-const experiences = [
-  {
-    title: 'Train at the X-Mansion',
-    host: 'Hosted by Jubilee',
-    price: '€36 per guest',
-    image: '/placeholder.svg',
-    live: true,
-  },
-  {
-    title: 'Go VIP with Kevin Hart',
-    host: 'Hosted by Kevin Hart',
-    price: 'Coming August 21',
-    image: '/placeholder.svg',
-  },
-  {
-    title: 'Join a living room session with Doja',
-    host: 'Hosted by Doja Cat',
-    price: 'Coming October',
-    image: '/placeholder.svg',
-  },
-  {
-    title: "Stay in Prince's Purple Rain house",
-    host: 'Hosted by Wendy and Lisa',
-    price: 'Coming October',
-    image: '/placeholder.svg',
-  },
-  {
-    title: 'Live like Bollywood star Janhvi Kapoor',
-    host: 'Hosted by Janhvi Kapoor',
-    price: 'Sold out',
-    image: '/placeholder.svg',
-  },
-];
-
-const Index = () => {
-  const [searchParams, setSearchParams] = useState({
-    where: '',
-    checkIn: '',
-    checkOut: '',
-    who: '',
-  });
-
-  const handleSearchChange = (e) => {
-    setSearchParams({ ...searchParams, [e.target.name]: e.target.value });
-  };
+  const experiences = [
+    {
+      title: 'Train at the X-Mansion',
+      host: 'Hosted by Jubilee',
+      price: '€36 per guest',
+      image: '/placeholder.svg',
+      live: true,
+    },
+    {
+      title: 'Go VIP with Kevin Hart',
+      host: 'Hosted by Kevin Hart',
+      price: 'Coming August 21',
+      image: '/placeholder.svg',
+    },
+    {
+      title: 'Join a living room session with Doja',
+      host: 'Hosted by Doja Cat',
+      price: 'Coming October',
+      image: '/placeholder.svg',
+    },
+    {
+      title: "Stay in Prince's Purple Rain house",
+      host: 'Hosted by Wendy and Lisa',
+      price: 'Coming October',
+      image: '/placeholder.svg',
+    },
+    {
+      title: 'Live like Bollywood star Janhvi Kapoor',
+      host: 'Hosted by Janhvi Kapoor',
+      price: 'Sold out',
+      image: '/placeholder.svg',
+    },
+  ];
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
