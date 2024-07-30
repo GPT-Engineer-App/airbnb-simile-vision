@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Globe, Menu, User, LogOut } from 'lucide-react';
+import { Search, Globe, Menu, User, LogOut, Calendar } from 'lucide-react';
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -8,6 +8,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { DayPicker } from 'react-day-picker'
+import { format } from 'date-fns'
 import {
   Dialog,
   DialogContent,
@@ -45,13 +47,20 @@ const Index = () => {
   };
   const [searchParams, setSearchParams] = useState({
     where: '',
-    checkIn: '',
-    checkOut: '',
     who: '',
+  });
+
+  const [dateRange, setDateRange] = useState({
+    from: undefined,
+    to: undefined
   });
 
   const handleSearchChange = (e) => {
     setSearchParams({ ...searchParams, [e.target.name]: e.target.value });
+  };
+
+  const handleDateSelect = (range) => {
+    setDateRange(range);
   };
 
   const handleLogout = () => {
@@ -170,22 +179,32 @@ const Index = () => {
               value={searchParams.where}
               onChange={handleSearchChange}
             />
-            <Input
-              type="text"
-              name="checkIn"
-              placeholder="Check in"
-              className="border-none"
-              value={searchParams.checkIn}
-              onChange={handleSearchChange}
-            />
-            <Input
-              type="text"
-              name="checkOut"
-              placeholder="Check out"
-              className="border-none"
-              value={searchParams.checkOut}
-              onChange={handleSearchChange}
-            />
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" className="w-[280px] justify-start text-left font-normal">
+                  <Calendar className="mr-2 h-4 w-4" />
+                  {dateRange.from ? (
+                    dateRange.to ? (
+                      <>
+                        {format(dateRange.from, "LLL dd, y")} - {format(dateRange.to, "LLL dd, y")}
+                      </>
+                    ) : (
+                      format(dateRange.from, "LLL dd, y")
+                    )
+                  ) : (
+                    <span>Pick a date</span>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <DayPicker
+                  mode="range"
+                  selected={dateRange}
+                  onSelect={handleDateSelect}
+                  numberOfMonths={2}
+                />
+              </PopoverContent>
+            </Popover>
             <Input
               type="text"
               name="who"
