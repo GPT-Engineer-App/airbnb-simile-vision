@@ -237,8 +237,9 @@ const Index = () => {
               value={searchParams.who}
               onChange={handleSearchChange}
             />
-            <Button size="icon" className="bg-[#FF385C] text-white rounded-full">
-              <Search className="h-4 w-4" />
+            <Button className="bg-[#FF385C] text-white rounded-full px-4 py-2 flex items-center">
+              <Search className="h-4 w-4 mr-2" />
+              <span>Search</span>
             </Button>
           </div>
         </div>
