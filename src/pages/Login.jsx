@@ -13,7 +13,7 @@ const Login = () => {
     e.preventDefault();
     if (username === 'admin' && password === 'admin') {
       localStorage.setItem('isLoggedIn', 'true');
-      navigate('/');
+      navigate('/my-trips');
     } else {
       setError('Invalid credentials');
     }
