@@ -2,6 +2,10 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Globe, Menu, User, LogOut, Calendar } from 'lucide-react';
 import { createApi } from 'unsplash-js';
+
+const unsplash = createApi({
+  accessKey: 'YOUR_UNSPLASH_ACCESS_KEY'
+});
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -127,15 +131,28 @@ const Index = () => {
   ];
 
   useEffect(() => {
-    // Simulating image URLs for experiences
-    const simulatedImages = {
-      'Train at the X-Mansion': '/placeholder.svg',
-      'Go VIP with Kevin Hart': '/placeholder.svg',
-      'Join a living room session with Doja': '/placeholder.svg',
-      "Stay in Prince's Purple Rain house": '/placeholder.svg',
-      'Live like Bollywood star Janhvi Kapoor': '/placeholder.svg',
+    const fetchImages = async () => {
+      const imagePromises = experiences.map(async (experience) => {
+        try {
+          const result = await unsplash.search.getPhotos({
+            query: experience.title,
+            page: 1,
+            perPage: 1,
+          });
+          if (result.response && result.response.results.length > 0) {
+            return { [experience.title]: result.response.results[0].urls.regular };
+          }
+        } catch (error) {
+          console.error('Error fetching Unsplash image:', error);
+        }
+        return { [experience.title]: '/placeholder.svg' };
+      });
+
+      const images = await Promise.all(imagePromises);
+      setExperienceImages(Object.assign({}, ...images));
     };
-    setExperienceImages(simulatedImages);
+
+    fetchImages();
   }, []);
 
   return (
@@ -248,6 +265,7 @@ const Index = () => {
                 src={experienceImages[experience.title] || '/placeholder.svg'} 
                 alt={experience.title} 
                 className="w-full h-64 object-cover"
+                loading="lazy"
               />
               {experience.live && (
                 <span className="absolute top-2 left-2 bg-white text-black text-xs font-semibold px-2 py-1 rounded">
