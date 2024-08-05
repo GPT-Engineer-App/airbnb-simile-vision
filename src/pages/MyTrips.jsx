@@ -1,11 +1,17 @@
 import { Button } from "@/components/ui/button"
 import { Search, Globe, Menu, User, LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { createApi } from 'unsplash-js';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+
+const unsplash = createApi({
+  accessKey: 'YOUR_UNSPLASH_ACCESS_KEY'
+});
 
 const MyTrips = () => {
   const navigate = useNavigate();
@@ -15,19 +21,48 @@ const MyTrips = () => {
     navigate('/');
   };
 
-  const pastTrips = [
-    { id: 1, location: 'Marinje Zemlje', host: 'Alma', date: 'May 23-26, 2018', image: '/placeholder.svg' },
-    { id: 2, location: 'Plovdiv', host: 'Stefaniya', date: 'Sep 19-21, 2017', image: '/placeholder.svg' },
-    { id: 3, location: 'Zürich', host: 'Christian', date: 'Sep 3-9, 2017', image: '/placeholder.svg' },
-    { id: 4, location: 'Thessaloniki', host: 'Alexandra', date: 'Jan 22-25, 2017', image: '/placeholder.svg' },
-    { id: 5, location: 'Wembley', host: 'Bemi', date: 'Oct 14-19, 2016', image: '/placeholder.svg' },
-    { id: 6, location: 'Sarajevo', host: 'Dario Darije', date: 'May 11-15, 2016', image: '/placeholder.svg' },
-  ];
+  const [pastTrips, setPastTrips] = useState([
+    { id: 1, location: 'Marinje Zemlje', host: 'Alma', date: 'May 23-26, 2018' },
+    { id: 2, location: 'Plovdiv', host: 'Stefaniya', date: 'Sep 19-21, 2017' },
+    { id: 3, location: 'Zürich', host: 'Christian', date: 'Sep 3-9, 2017' },
+    { id: 4, location: 'Thessaloniki', host: 'Alexandra', date: 'Jan 22-25, 2017' },
+    { id: 5, location: 'Wembley', host: 'Bemi', date: 'Oct 14-19, 2016' },
+    { id: 6, location: 'Sarajevo', host: 'Dario Darije', date: 'May 11-15, 2016' },
+  ]);
 
-  const canceledTrips = [
-    { id: 7, location: 'Jakovici', host: 'Ivana', date: 'Sep 28 - Oct 1, 2022', image: '/placeholder.svg' },
-    { id: 8, location: 'Kyiv', host: 'Apaoa', date: 'Mar 7-9, 2022', image: '/placeholder.svg' },
-  ];
+  const [canceledTrips, setCanceledTrips] = useState([
+    { id: 7, location: 'Jakovici', host: 'Ivana', date: 'Sep 28 - Oct 1, 2022' },
+    { id: 8, location: 'Kyiv', host: 'Apaoa', date: 'Mar 7-9, 2022' },
+  ]);
+
+  useEffect(() => {
+    const fetchImages = async () => {
+      const updatedPastTrips = await Promise.all(pastTrips.map(async (trip) => {
+        const result = await unsplash.search.getPhotos({
+          query: trip.location,
+          page: 1,
+          perPage: 1,
+        });
+        const imageUrl = result.response.results[0]?.urls.regular || '/placeholder.svg';
+        return { ...trip, image: imageUrl };
+      }));
+
+      const updatedCanceledTrips = await Promise.all(canceledTrips.map(async (trip) => {
+        const result = await unsplash.search.getPhotos({
+          query: trip.location,
+          page: 1,
+          perPage: 1,
+        });
+        const imageUrl = result.response.results[0]?.urls.regular || '/placeholder.svg';
+        return { ...trip, image: imageUrl };
+      }));
+
+      setPastTrips(updatedPastTrips);
+      setCanceledTrips(updatedCanceledTrips);
+    };
+
+    fetchImages();
+  }, []);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
